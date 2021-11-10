@@ -1,0 +1,140 @@
+
+1.DDL Query for Creation of External Table named CovidTable in Synase Analytics from "Bing COVID-19 Data":
+_______________________________________________________________________________________________________________________
+
+IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') 
+	CREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] 
+	WITH ( FORMAT_TYPE = PARQUET)
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'public_pandemicdatalake_blob_core_windows_net') 
+	CREATE EXTERNAL DATA SOURCE [public_pandemicdatalake_blob_core_windows_net] 
+	WITH (
+		LOCATION = 'wasbs://public@pandemicdatalake.blob.core.windows.net' 
+	)
+GO
+
+CREATE EXTERNAL TABLE CovidTable (	[id] int,
+	[updated] date,
+	[confirmed] int,
+	[confirmed_change] int,
+	[deaths] int,
+	[deaths_change] smallint,
+	[recovered] int,
+	[recovered_change] int,
+	[latitude] float,
+	[longitude] float,
+	[iso2] varchar(8000),
+	[iso3] varchar(8000),
+	[country_region] varchar(8000),
+	[admin_region_1] varchar(8000),
+	[iso_subdivision] varchar(8000),
+	[admin_region_2] varchar(8000),
+	[load_time] datetime2(7)
+	)
+	WITH (
+	LOCATION = 'curated/covid-19/bing_covid-19_data/latest/bing_covid-19_data.parquet',
+	DATA_SOURCE = [public_pandemicdatalake_blob_core_windows_net],
+	FILE_FORMAT = [SynapseParquetFormat]
+	)
+GO
+
+SELECT TOP 100 * FROM CovidTable
+GO
+
+
+DDL Query for Creation of Normal/Internal Table named CovidData 
+
+
+CREATE TABLE CovidData (	[id] int,
+	[updated] date,
+	[confirmed] int,
+	[confirmed_change] int,
+	[deaths] int,
+	[deaths_change] smallint,
+	[recovered] int,
+	[recovered_change] int,
+	[latitude] float,
+	[longitude] float,
+	[iso2] varchar(8000),
+	[iso3] varchar(8000),
+	[country_region] varchar(8000),
+	[admin_region_1] varchar(8000),
+	[iso_subdivision] varchar(8000),
+	[admin_region_2] varchar(8000),
+	[load_time] datetime2(7)
+	)
+
+Query to select from the Blank CovidData table to see that the table is created correctly:
+
+select
+[id],
+[updated],
+[confirmed],
+[confirmed_change],
+[deaths],
+[deaths_change],
+[recovered],
+[recovered_change],
+[latitude],
+[longitude],
+[iso2],
+[iso3],
+[country_region],
+[admin_region_1],
+[iso_subdivision],
+[admin_region_2],
+[load_time]
+from
+[CovidData]
+_________________________________________________________________________________________________________________________________
+
+2.Query to insert data into Normal/Internal Table named CovidData by seleting all data from External Table named CovidTable.
+The internal Table CovidData  is created since it will have data in it and the data retreival from the query on Intrenal Table from PowerBI will be fast.
+_________________________________________________________________________________________________________________________________
+
+insert into [dbo].[CovidData] 
+(
+[id]
+,[updated]
+,[confirmed]
+,[confirmed_change]
+,[deaths]
+,[deaths_change]
+,[recovered]
+,[recovered_change]
+,[latitude]
+,[longitude]
+,[iso2]
+,[iso3]
+,[country_region]
+,[admin_region_1]
+,[iso_subdivision]
+,[admin_region_2]
+,[load_time]
+)
+SELECT [id]
+,[updated]
+,[confirmed]
+,[confirmed_change]
+,[deaths]
+,[deaths_change]
+,[recovered]
+,[recovered_change]
+,[latitude]
+,[longitude]
+,[iso2]
+,[iso3]
+,[country_region]
+,[admin_region_1]
+,[iso_subdivision]
+,[admin_region_2]
+,[load_time]
+ FROM [dbo].[CovidTable]
+
+--Successful Query
+
+3.Connection String to connect to [CovidData] table in covidsql database in Synapse Analytics from PowerBI
+
+tcp:coviddataraj.sql.azuresynapse.net,1433
+
