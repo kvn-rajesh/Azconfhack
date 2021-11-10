@@ -4,7 +4,7 @@ Theme : Code for COVID-19
 
 Challenge Statement:
 
-	Health: Address and scale a range of health initiatives, including preventative/hygiene behaviors (especially for at-risk countries and populations), supporting frontline health workers, scaling telemedicine, contact tracing/containment strategies, treatment and diagnosis development.
+Health: Address and scale a range of health initiatives, including preventative/hygiene behaviors (especially for at-risk countries and populations), supporting frontline health workers, scaling telemedicine, contact tracing/containment strategies, treatment and diagnosis development.
 
 
 Potential Wellness of the Problem:-
