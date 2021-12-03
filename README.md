@@ -1,6 +1,6 @@
-# Azconfhack
-Azure Community Conference 2021 Hackathon Solution
-Theme : Code for COVID-19
+# Microsoft Future Ready Talent Project
+
+Theme : CoviAnalytics
 
 Challenge Statement:
 
